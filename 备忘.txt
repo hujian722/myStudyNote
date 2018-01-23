@@ -1,0 +1,40 @@
+curl "http://localhost:8091/status?pretty=y"
+curl "http://10.0.2.15:9333/cluster/status?pretty=y"
+{
+  "IsLeader": true,
+  "Leader": "10.0.2.15:9333",
+  "Peers": [
+    "10.0.2.15:9334",
+    "10.0.2.15:9335"
+  ]
+}
+curl "http://localhost:9333/dir/status?pretty=y"
+
+
+curl  "http://localhost:8091/?pretty=y
+
+
+weed export -dir=./data1 -volumeId=2 -o=./tt.tar -fileNameFormat={{.Key}}:{{.Name}}
+
+
+weed volume -ip=192.168.212.127 -ip.bind=0.0.0.0 -dir=./data1 -max=5 -mserver=192.168.212.127:9333 -port=8091
+
+export ETCDCTL_API=3
+./etcdctl get --endpoints=http://192.168.212.203:2379  --prefix=true Fss
+
+protoc --gogofast_out=plugins=grpc:. .\gitlab.potato.im\potatoprotobufs\infoserver\*.proto
+
+
+
+
+
+SELECT a.Channel_id,b.user_id from chat_channel a inner join super_chat_participants b 
+on a.Channel_id = b.channel_id where a.Channel_id=71225
+
+SELECT * from chat_channel a where a.Channel_id=71225
+SELECT * from super_chat_participants a where a.Channel_id=71225
+
+
+
+
+
