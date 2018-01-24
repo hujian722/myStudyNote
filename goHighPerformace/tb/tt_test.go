@@ -35,16 +35,16 @@ var m = make(map[string]int)
 var bb [][]byte
 
 func init() {
-	for i := 0; i < 200; i++ {
+	for i := 0; i < 2000; i++ {
 		bb = append(bb, []byte(strconv.Itoa(i)))
 	}
-	for i := 0; i < 200; i++ {
+	for i := 0; i < 2000; i++ {
 		s := string(bb[i])
 		m[s] = i
 	}
 }
 func MstringOne() {
-	for i := 0; i < 200; i++ {
+	for i := 0; i < 2000; i++ {
 		_, ok := m[string(bb[i])]
 		if ok {
 
@@ -52,7 +52,7 @@ func MstringOne() {
 	}
 }
 func MstringTwo() {
-	for i := 0; i < 200; i++ {
+	for i := 0; i < 2000; i++ {
 		key := string(bb[i])
 		_, ok := m[key]
 		if ok {
@@ -63,5 +63,10 @@ func MstringTwo() {
 func BenchmarkMapString(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		MstringOne()
+	}
+}
+func BenchmarkMapStringTwo(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		MstringTwo()
 	}
 }
