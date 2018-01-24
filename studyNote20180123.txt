@@ -24,3 +24,13 @@ takes a []byte bu×er and returns the amount of bytes read.
 The Òrst Read method will always allocate a bu×er, putting pressure on the GC. The second
 Òlls the bu×er it was given.
 */
+
+func main() {
+	a := []int{1, 2, 3, 4, 5, 6, 99}
+	for i, v := range a {
+		fmt.Println(i, v)
+	}
+	for j := range a {  //此种要快些
+		fmt.Println(j)
+	}
+}

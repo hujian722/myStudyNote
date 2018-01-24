@@ -28,13 +28,3 @@ protoc --gogofast_out=plugins=grpc:. .\gitlab.potato.im\potatoprotobufs\infoserv
 
 
 
-SELECT a.Channel_id,b.user_id from chat_channel a inner join super_chat_participants b 
-on a.Channel_id = b.channel_id where a.Channel_id=71225
-
-SELECT * from chat_channel a where a.Channel_id=71225
-SELECT * from super_chat_participants a where a.Channel_id=71225
-
-
-
-
-
