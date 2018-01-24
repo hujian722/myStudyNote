@@ -34,3 +34,7 @@ func main() {
 		fmt.Println(j)
 	}
 }
+//输出数组slice地址
+var fruitslice=[]int{1,2,3}
+fmt.Printf("%p \n", fruitslice)
+fmt.Printf("%p \n", &fruitslice[0])
