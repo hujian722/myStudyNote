@@ -38,3 +38,12 @@ func main() {
 var fruitslice=[]int{1,2,3}
 fmt.Printf("%p \n", fruitslice)
 fmt.Printf("%p \n", &fruitslice[0])
+
+
+type A struct{
+}
+var a A
+var a *A  //0x0
+func F()(out *A){//0x0
+	
+}
