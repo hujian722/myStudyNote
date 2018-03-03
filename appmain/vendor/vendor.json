@@ -1,0 +1,36 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "f6AiWDGLbUcWAWukqXCUIheFIxg=",
+			"path": "github.com/howeyc/gopass",
+			"revision": "bf9dde6d0d2c004a008c27aaee91170c786f6db8",
+			"revisionTime": "2017-01-09T16:22:49Z"
+		},
+		{
+			"checksumSHA1": "udhtSJdkeQHm9EO/ESAKsfE6lXU=",
+			"path": "github.com/urfave/cli",
+			"revision": "af596ea395b3e1f842d2c8bb03d2e6eebb81f6b7",
+			"revisionTime": "2017-08-29T06:43:31Z"
+		},
+		{
+			"checksumSHA1": "ZaU56svwLgiJD0y8JOB3+/mpYBA=",
+			"path": "golang.org/x/crypto/ssh/terminal",
+			"revision": "ff61c64ba31d134dc498e23269e491f02917432a",
+			"revisionTime": "2017-06-22T11:13:25Z"
+		},
+		{
+			"checksumSHA1": "Tkb1hBdBWeO7SGjixS2Hm48F6+s=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "ff61c64ba31d134dc498e23269e491f02917432a",
+			"revisionTime": "2017-06-22T11:13:25Z"
+		},
+		{
+			"checksumSHA1": "16RJTtv3sA0vbLNBtVEzzmOsnrI=",
+			"path": "tmain/encrypt/encryption",
+			"revision": ""
+		}
+	],
+	"rootPath": "tmain/encrypt/appmain"
+}
