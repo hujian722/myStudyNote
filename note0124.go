@@ -7,6 +7,9 @@ import (
 /*
 https://golangbot.com/arrays-and-slices/
 如果slice很大  我们只对部分数据有兴趣  那么用copy
+var aa = []*A{a0, a1, a2, a3}
+bb := aa[:len(aa)-1]
+此时我们只用a0 a1 a2 但是 a3不会被回收
 */
 
 //========================================================
@@ -201,19 +204,69 @@ All structs in Golang are of the same kind, but not the same type
 //========================================================
 //========================================================	
 
+那么 Pool 都适用于什么场景呢？从它的特点来说，适用与无状态的对象的复用，而不适用与如连接池之类的。在 fmt 包中有一个很好的使用池的例子，它维护一个动态大小的临时输出缓冲区。
 
+官方例子：
+package main
+
+import (
+    "bytes"
+    "io"
+    "os"
+    "sync"
+    "time"
+)
+
+var bufPool = sync.Pool{
+    New: func() interface{} {
+        return new(bytes.Buffer)
+    },
+}
+
+func timeNow() time.Time {
+    return time.Unix(1136214245, 0)
+}
+
+func Log(w io.Writer, key, val string) {
+    // 获取临时对象，没有的话会自动创建
+    b := bufPool.Get().(*bytes.Buffer)
+    b.Reset()
+    b.WriteString(timeNow().UTC().Format(time.RFC3339))
+    b.WriteByte(' ')
+    b.WriteString(key)
+    b.WriteByte('=')
+    b.WriteString(val)
+    w.Write(b.Bytes())
+    // 将临时对象放回到 Pool 中
+    bufPool.Put(b)
+}
+
+func main() {
+    Log(os.Stdout, "path", "/search?q=flowers")
+}
+
+打印结果：
+2006-01-02T15:04:05Z path=/search?q=flowers
 
 //========================================================
 //========================================================	
-
-
+监控gc ====》》》  set GODEBUG=gctrace=1
+逃逸分析 go build -gcflags "-m -l"
 //========================================================
 //========================================================	
 
-
+// Allocate an object of size bytes.
+// Small objects are allocated from the per-P cache's free lists.
+// Large objects (> 32 kB) are allocated straight from the heap.
+func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {}
+如果堆上分配大于32k  将触发gc
 //========================================================
 //========================================================	
+Insert
 
+s = append(s, 0)
+copy(s[i+1:], s[i:])
+s[i] = x
 
 //========================================================
 //========================================================	
