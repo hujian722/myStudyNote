@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"bytes"
 )
 
@@ -232,9 +233,9 @@ func Log(w io.Writer, key, val string) {
     b := bufPool.Get().(*bytes.Buffer)
     b.Reset()
     b.WriteString(timeNow().UTC().Format(time.RFC3339))
-    b.WriteByte(' ')
+    b.WriteByte(, ,)
     b.WriteString(key)
-    b.WriteByte('=')
+    b.WriteByte(,=,)
     b.WriteString(val)
     w.Write(b.Bytes())
     // 将临时对象放回到 Pool 中
@@ -256,7 +257,7 @@ func main() {
 //========================================================	
 
 // Allocate an object of size bytes.
-// Small objects are allocated from the per-P cache's free lists.
+// Small objects are allocated from the per-P cache,s free lists.
 // Large objects (> 32 kB) are allocated straight from the heap.
 func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {}
 如果堆上分配大于32k  将触发gc
@@ -270,38 +271,175 @@ s[i] = x
 
 //========================================================
 //========================================================	
+(pprof) top10
+Total: 2525 samples
+     298  11.8%  11.8%      345  13.7% runtime.mapaccess1_fast64
+     268  10.6%  22.4%     2124  84.1% main.FindLoops
+     251   9.9%  32.4%      451  17.9% scanblock
+     178   7.0%  39.4%      351  13.9% hash_insert
+     131   5.2%  44.6%      158   6.3% sweepspan
+     119   4.7%  49.3%      350  13.9% main.DFS
+      96   3.8%  53.1%       98   3.9% flushptrbuf
+      95   3.8%  56.9%       95   3.8% runtime.aeshash64
+      95   3.8%  60.6%      101   4.0% runtime.settype_flush
+      88   3.5%  64.1%      988  39.1% runtime.mallocgc
+When CPU profiling is enabled, the Go program stops about 100 times per second and records a sample 
+consisting of the program counters on the currently executing goroutine,s stack. The profile has 2525 samples, 
+so it was running for a bit over 25 seconds. In the `go tool pprof` output, there is a row for each function that 
+appeared in a sample. The first two columns show the number of samples in which the function was running 
+(as opposed to waiting for a called function to return), as a raw count and as a percentage of total samples. 
+The runtime.mapaccess1_fast64 function was running during 298 samples, or 11.8%. The top10 output is sorted by this sample count. 
+The third column shows the running total during the listing: the first three rows account for 32.4% of the samples. 
+The fourth and fifth columns show the number of samples in which the function appeared (either running or waiting for a called function to return). 
+The main.FindLoops function was running in 10.6% of the samples, 
+but it was on the call stack (it or functions it called were running) in 84.1% of the samples.
 
+To sort by the fourth and fifth columns, use the -cum (for cumulative) flag:
+
+(pprof) top5 -cum
+Total: 2525 samples
+       0   0.0%   0.0%     2144  84.9% gosched0
+       0   0.0%   0.0%     2144  84.9% main.main
+       0   0.0%   0.0%     2144  84.9% runtime.main
+       0   0.0%   0.0%     2124  84.1% main.FindHavlakLoops
+     268  10.6%  10.6%     2124  84.1% main.FindLoops
+(pprof) top5 -cum
+In fact the total for main.FindLoops and main.main should have been 100%, but each stack sample only includes the bottom 100 stack frames; during about a quarter of the samples, the recursive main.DFS function was more than 100 frames deeper than main.main so the complete trace was truncated.
 
 //========================================================
 //========================================================	
 
+BenchmarkMatchString-4            100,000  17,380 ns/op  42,752 B/op  70 allocs/op
+BenchmarkMatchStringCompiled-4  2,000,000     843 ns/op       0 B/op   0 allocs/op
 
+BenchmarkConcatString-4    10,000,000  159 ns/op  530 B/op  0 allocs/op
+BenchmarkConcatBuffer-4   200,000,000   10 ns/op    2 B/op  0 allocs/op
+BenchmarkConcatBuilder-4  100,000,000   11 ns/op    2 B/op  0 allocs/op
+
+//========================================================
+//========================================================	
+return xxx会被改写成:
+
+返回值 = xxx
+
+调用defer函数
+
+空的return
 
 //========================================================
 //========================================================	
 
+func find(num int, nums ...int)  
+find(89, []int{nums}) 
+func main() {  
+    nums := []int{89, 90, 95}
+    find(89, nums)
+	 find(89, nums...)
+}
+//========================================================
+//========================================================	
+wrap errors with http://github.com/pkg/errors
+so: errors.Wrap(err, “additional message to a given error”)
+
+implement Stringer interface for integers const values
+https://godoc.org/golang.org/x/tools/cmd/stringer
+
+be careful with range in Go:
+for i := range a and for i, v := range &a doesn,t make a copy of a
+but for i, v := range a does
+func main() {
+	v := make([]int, 4, 10)
+
+	for i := range v {
+		v = append(v, i+10)
+	}
+	log.Println("over", v)
+}
+this rule: if you range over an array (or pointer to) and you only assign the index: then only len(a) is evaluated. 
+more: https://play.golang.org/p/4b181zkB1O
+
+don,t forget to stop ticker, unless you need a leaked channel
+ticker := time.NewTicker(1 * time.Second)
+defer ticker.Stop()
+//========================================================
+//========================================================	
+http.Get()  避免使用  这个不会超时
+golang json   不需要的字段导出   `json:"-"`
+实现自定义json
+type Month struct {
+    MonthNumber int
+    YearNumber int
+}
+
+func (m Month) MarshalJSON() ([]byte, error){
+    return []byte(fmt.Sprintf("%d/%d", m.MonthNumber, m.YearNumber)), nil
+}
+
+func (m *Month) UnmarshalJSON(value []byte) error {
+    parts := strings.Split(string(value), "/")
+    m.MonthNumber = strconv.ParseInt(parts[0], 10, 32)
+    m.YearNumber = strconv.ParseInt(parts[1], 10, 32)
+
+    return nil
+}
+//========================================================
+//========================================================	
+字节对齐
+type T1 struct {
+	a int8
+	// To make b 8-aligned on AMD64 OS and 4-aligned on i386 OS,
+	// 7 bytes padded on AMD64 OS and pad 3 bytes padded on i386 OS here.
+	b int64
+	c int16
+	// To make the size of T1 values is a multiple of the alignment of T1,
+	// 6 bytes padded on AMD64 OS and pad 2 bytes padded on i386 OS here.
+}
+
+// the sizes of T1 values are 24 on AMD64 OS and 16 on i386 OS.
+
+type T2 struct {
+	a int8
+	// To make c 2-aligned,
+	// 1 byte padded on both AMD64 and i386 OS here.
+	c int16
+	// To make b 8-aligned on AMD64 OS and 4-aligned on i386 OS,
+	// 4 bytes padded on AMD64 OS here. No padding on i386 OS.
+	b int64
+}
 
 //========================================================
 //========================================================	
+func main() {
+	time.Sleep(time.Second)
+	s := make(chan os.Signal, 1)
+	signal.Notify(s, os.Interrupt)
+	for {
+		select {
+		case <-time.After(3 * time.Second):
+		case <-s:
+			fmt.Println(" ctrl + c")
+			return
+		default:
+		}
+	}
+}
+time.After会产生内存问题  会释放  但是释放必须等时间到了才行
+*** best 主动释放
+package main
 
+import "time"
 
-//========================================================
-//========================================================	
+func main() {
+    for {
+        t := time.NewTimer(3*time.Second)
 
-
-//========================================================
-//========================================================	
-
-
-//========================================================
-//========================================================	
-
-
-
-//========================================================
-//========================================================	
-
-
+        select {
+        case <- t.C:
+        default:
+            t.Stop()
+        }
+    }
+}
 //========================================================
 //========================================================	
 //========================================================
