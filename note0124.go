@@ -442,6 +442,15 @@ func main() {
 }
 //========================================================
 //========================================================	
+http://localhost:6060/debug/pprof/
+http://localhost:6060/debug/pprof/profile
+http://localhost:6060/debug/pprof/trace?seconds=5
+http://localhost:6060/debug/pprof/heap
+go tool pprof --inuse_space http://localhost:6060/debug/pprof/heap
+go tool pprof --alloc_space http://localhost:6060/debug/pprof/heap
+
+用--inuse_space来分析程序常驻内存的占用情况;
+用--alloc_space来分析内存的临时分配情况，可以提高程序的运行速度。
 //========================================================
 //========================================================	
 
