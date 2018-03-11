@@ -453,17 +453,33 @@ go tool pprof --alloc_space http://localhost:6060/debug/pprof/heap
 用--alloc_space来分析内存的临时分配情况，可以提高程序的运行速度。
 //========================================================
 //========================================================	
+GC 算法：引用计数（reference counting）、
+标记-清扫（mark & sweep）、三色标记算法 白色灰色黑色
+节点复制（Copying Garbage Collection），
+分代收集（Generational Garbage Collection）。
 
+//========================================================
+//========================================================	
+Why are map elements unaddressable?
+The first reason is that, in Go, for a map m and a key value k, the read operation m[k] is always valid, even if m is a nil map or m doesn,t contain the key k. For the two circumstances, m[k] is always the zero value of the map element type. The zero value of any type should be immutable. Immutable values can,t be taken addresses, otherwise their values may be modified. Whether or not m[k] is a zero value can only be detected at run time. So, to make it safe and consistent, Go compilers always think m[k] is unaddressable.
+
+Another reason is making map elements addressable means the address of a map element mustn,t be changed in its life cycle. This prevents Go compilers using more efficient algorithms to implement map. For the official Go compiler, the internal addresses of map elements may be changed at run time.
 
 //========================================================
 //========================================================	
 
+What does the compile error message non-name *** on left side of := mean?
+Up to now (Go 1.8), there is a mandatory rule for short variable declarations:
 
-//========================================================
-//========================================================	
+All items at the left side of := must be pure identifiers and at least one of them must be a new variable name.
+This means container elements (x[i]), struct fields (x.f), and pointer dereferences etc, can't appear at the left side of :=.
+Currently, there is an open issue (which was merged with a more related one) for this problem. It looks Go authors want to leave this problem unresolved until Go 2.0.
 
-
-
+var arry =[]int{1,2,3,4}
+	arry[0],i:=7,8
+	log.Println(arry)
+	log.Println(k,i)
+编译报错：non-name arry[0] on left side of :=
 //========================================================
 //========================================================	
 
