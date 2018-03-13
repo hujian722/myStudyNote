@@ -1,5 +1,5 @@
-Miscellaneous    各种各样的; 五花八门的; 混杂的; 多方面的;
-Mutable  易变的
-immutable 不可改变的
+Miscellaneous  美 [ˌmɪsəˈleniəs]  各种各样的; 五花八门的; 混杂的; 多方面的;
+Mutable  [ˈmjutəbəl]易变的
+immutable  美 [ɪˈmjutəbəl]不可改变的
 Sometimes, your program can’t afford that luxury 奢侈的
-analogous  相似的
+analogous   美 [əˈnæləɡəs]相似的

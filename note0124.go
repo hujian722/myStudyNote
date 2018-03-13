@@ -472,7 +472,7 @@ What does the compile error message non-name *** on left side of := mean?
 Up to now (Go 1.8), there is a mandatory rule for short variable declarations:
 
 All items at the left side of := must be pure identifiers and at least one of them must be a new variable name.
-This means container elements (x[i]), struct fields (x.f), and pointer dereferences etc, can't appear at the left side of :=.
+This means container elements (x[i]), struct fields (x.f), and pointer dereferences etc, can,t appear at the left side of :=.
 Currently, there is an open issue (which was merged with a more related one) for this problem. It looks Go authors want to leave this problem unresolved until Go 2.0.
 
 var arry =[]int{1,2,3,4}
@@ -482,12 +482,30 @@ var arry =[]int{1,2,3,4}
 编译报错：non-name arry[0] on left side of :=
 //========================================================
 //========================================================	
-
+在默认情况下，Go语言的运行时系统会以100 Hz的的频率对CPU使用情况进行取样。
+也就是说每秒取样100次，即每10毫秒会取样一次。为什么使用这个频率呢？因为100 Hz既足够产生有用的数据，
+又不至于让系统产生停顿。并且100这个数上也很容易做换算，比如把总取样计数换算为每秒的取样数。
+实际上，这里所说的对CPU使用情况的取样就是对当前的Goroutine的堆栈上的程序计数器的取样。
+由此，我们就可以从样本记录中分析出哪些代码是计算时间最长或者说最耗CPU资源的部分了。
 
 //========================================================
 //========================================================	
+go 语言没有构造函数一说，所以一般会定义NewXXX函数来初始化相关类。
+ NewXXX 函数返回接口时就是简单工厂模式，也就是说Golang的一般推荐做法就是简单工厂。
+//API is interface
+type API interface {
+	Say(name string) string
+}
 
-
+//NewAPI return Api instance by type
+func NewAPI(t int) API {
+	if t == 1 {
+		return &hiAPI{}
+	} else if t == 2 {
+		return &helloAPI{}
+	}
+	return nil
+}
 //========================================================
 //========================================================	
 
