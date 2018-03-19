@@ -3,3 +3,4 @@ Mutable  [ˈmjutəbəl]易变的
 immutable  美 [ɪˈmjutəbəl]不可改变的
 Sometimes, your program can’t afford that luxury 奢侈的
 analogous   美 [əˈnæləɡəs]相似的
+Precise 美 [prɪˈsaɪs] 清晰的; 精确的; 正规的; 精密;
