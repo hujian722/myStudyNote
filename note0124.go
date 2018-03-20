@@ -566,12 +566,43 @@ type A struct {
 
 //========================================================
 //========================================================	
+package main
 
+import (
+    "fmt"
+    "unsafe"
+)
+func main() {
+    var n int64 = 5
+    var pn = &n
+    var pf = (*float64)(unsafe.Pointer(pn))
+    // now, pn and pf are pointing at the same memory address
+    fmt.Println(*pf) // 2.5e-323
+    *pf = 3.14159
+	fmt.Println(n) // 4614256650576692846
+	//========
+	{
+		a := [4]int{0, 1, 2, 3}
+		p1 := unsafe.Pointer(&a[1])
+		p3 := unsafe.Pointer(uintptr(p1) + 2 * unsafe.Sizeof(a[0]))
+		*(*int)(p3) = 6
+		fmt.Println("a =", a) // a = [0 1 2 6]
+	}
+}
 
 
 //========================================================
 //========================================================	
-
-
+// 字符串值是不能更改的  但是指向能更改
+var s = "1234"
+up := (*reflect.StringHeader)(unsafe.Pointer(&s))
+p := (*string)(unsafe.Pointer(&s))
+*p = "789099999"
+//此种改变了s的ptr指向  能改变s的值
+var s = "1234"
+up := (*reflect.StringHeader)(unsafe.Pointer(&s))
+p := *(*string)(unsafe.Pointer(&s))
+p = "789099999"
+//此种没改变了s的ptr指向  不能改变s的值  因为p就是一个新定义的字符串
 //========================================================
 //========================================================	
