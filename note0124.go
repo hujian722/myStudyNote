@@ -128,6 +128,14 @@ func f() (r int) {
     return 1
 }
 
+当defer被声明时，其参数就会被实时解析
+func a() {
+	i := 0
+	defer fmt.Println(i)
+	i++
+	return
+	}
+	上面我们说过，defer函数会在return之后被调用。那么这段函数执行完之后，是不用应该输出1呢？
 //========================================================
 //========================================================	
 zero values  类型的0值
@@ -606,3 +614,21 @@ p = "789099999"
 //此种没改变了s的ptr指向  不能改变s的值  因为p就是一个新定义的字符串
 //========================================================
 //========================================================	
+
+golang   bits包
+golang   rate包
+golang http 持久连接示例
+func PrintLocalDial(network, addr string) (net.Conn, error) {
+	dial := net.Dialer{
+		Timeout:   3 * time.Second,
+		KeepAlive: 3 * time.Second,
+	}
+
+	conn, err := dial.Dial(network, addr)
+	if err != nil {
+		return conn, err
+	}
+	fmt.Println("connect done, use", conn.LocalAddr().String())
+
+	return conn, err
+}

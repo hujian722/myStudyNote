@@ -13,6 +13,7 @@ curl "http://localhost:9333/dir/status?pretty=y"
 
 curl  "http://localhost:8091/?pretty=y
 
+weed export -dir=./data1 -volumeId=2  //查看所有
 
 weed export -dir=./data1 -volumeId=2 -o=./tt.tar -fileNameFormat={{.Key}}:{{.Name}}
 
