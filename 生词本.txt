@@ -4,3 +4,8 @@ immutable  美 [ɪˈmjutəbəl]不可改变的
 Sometimes, your program can’t afford that luxury 奢侈的
 analogous   美 [əˈnæləɡəs]相似的
 Precise 美 [prɪˈsaɪs] 清晰的; 精确的; 正规的; 精密;
+
+sufficient 足够的 充分的
+deduce  推断 推论  演绎
+equivalent 相等的
+simulate 模仿
