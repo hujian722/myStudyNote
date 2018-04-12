@@ -25,6 +25,17 @@ export ETCDCTL_API=3
 
 protoc --gogofast_out=plugins=grpc:. .\gitlab.potato.im\potatoprotobufs\infoserver\*.proto
 
+Installing github.com/nsf/gocode FAILED
+Installing github.com/uudashr/gopkgs/cmd/gopkgs SUCCEEDED
+Installing github.com/ramya-rao-a/go-outline FAILED
+Installing github.com/acroca/go-symbols FAILED
+Installing golang.org/x/tools/cmd/guru FAILED
+Installing golang.org/x/tools/cmd/gorename FAILED
+Installing github.com/rogpeppe/godef SUCCEEDED
+Installing sourcegraph.com/sqs/goreturns FAILED
+Installing github.com/golang/lint/golint FAILED
+Installing github.com/derekparker/delve/cmd/dlv SUCCEEDED
+
 
 
 
