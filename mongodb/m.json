@@ -1,0 +1,5 @@
+post={
+    "title":"My fisrt blog",
+    "content":"you are so clever",
+    "date": new Date()
+}
