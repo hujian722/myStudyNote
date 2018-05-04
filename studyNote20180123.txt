@@ -14,7 +14,7 @@ val, ok := m[key]
 经下面测试 使用v, ok := m[string(bytes)]性能更高
 */
 /*
-Reduce allocations 减少内存分配
+Reduce allocations 减少内存分配 
 Make sure your APIs allow the caller to reduce the amount of garbage generated.
 Consider these two Read methods
  func (r *Reader) Read() ([]byte, error)
