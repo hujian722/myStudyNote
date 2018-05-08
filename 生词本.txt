@@ -10,3 +10,4 @@ deduce  推断 推论  演绎
 equivalent 相等的
 simulate 模仿
 suck  美/sʌk/ 吸吮；吸取
+verbose 美/vɝ'bos/  冗长的 繁琐的
